@@ -14,3 +14,5 @@ Delovne hipoteze:
 * Kako vrsta, starost, lokacija, energetski razred in velikost vplivajo na ceno objekta?
 * Kakšna je povezava med prodajcalcem in vrsto, starostjo, lokacijo, energetskim razredom, velikostjo in ceno objekta?
 * Kako sta dolžina in vsebina natančnejšega opisa povezana s prej omenjenimi parametri?
+
+'osnovni_podatki.csv' vsebuje podatke o ceni, lokaciji, vrsti, podvrsti in prodajalcu za vsak oglas. Pri večini oglasov vsebuje tudi informacije o starosti objekta in daljši opis.
