@@ -1,7 +1,11 @@
 import os
 import requests
-import re
 import sys
+import csv
+
+indeksi_po_letih = [57, 5, 8, 8, 8, 9, 11, 12, 11, 13, 11, 12, 12, 13, 15, 14, 22,
+18, 21, 28, 31, 36, 36, 34, 40, 36, 36, 36, 32, 31, 41, 53, 62, 57, 67, 62, 82, 
+102, 113, 106, 109, 99, 105, 131, 140, 140, 165, 173, 172, 189, 188, 184, 197, 118]
 
 def pripravi_imenik(ime_datoteke):
     imenik = os.path.dirname(ime_datoteke)
@@ -28,75 +32,17 @@ def vsebina_datoteke(ime_datoteke):
     with open(ime_datoteke, encoding='utf-8') as datoteka:
         return datoteka.read()
 
-for n in range(1, 31):
-    link = f"https://www.nepremicnine.net/oglasi-prodaja/ljubljana-mesto/stanovanje/{n}/"
-    datoteka = f"podatki\stanovanja-mesto\{n}.html"
-    shrani_spletno_stran(link, datoteka)
+def zapisi_csv(slovarji, imena_polj, ime_datoteke):
+    pripravi_imenik(ime_datoteke)
+    with open(ime_datoteke, 'w', encoding='utf-8') as csv_datoteka:
+        writer = csv.DictWriter(csv_datoteka, fieldnames=imena_polj)
+        writer.writeheader()
+        writer.writerows(slovarji)
 
-for n in range(1, 11):
-    link = f"https://www.nepremicnine.net/oglasi-prodaja/ljubljana-mesto/hisa/{n}/"
-    datoteka = f"podatki\hise-mesto\{n}.html"
-    shrani_spletno_stran(link, datoteka)
-
-for n in range(1, 7):
-    link = f"https://www.nepremicnine.net/oglasi-prodaja/ljubljana-okolica/stanovanje/{n}/"
-    datoteka = f"podatki\stanovanja-okolica\{n}.html"
-    shrani_spletno_stran(link, datoteka)
-
-for n in range(1, 16):
-    link = f"https://www.nepremicnine.net/oglasi-prodaja/ljubljana-okolica/hise/{n}/"
-    datoteka = f"podatki\hise-okolica\{n}.html"
-    shrani_spletno_stran(link, datoteka)
-
-povezave = []
-vzorec = r'<!--<meta itemprop="url" content="(?P<povezava>.*?)" />-->'
-for filename in os.listdir("podatki\stanovanja-mesto"):
-    if filename.endswith(".html"): 
-        with open("podatki/stanovanja-mesto/" + filename, encoding='utf-8') as datoteka:
-            stran = datoteka.read()
-            pojavitve = re.findall(vzorec, stran)
-            povezave.extend(pojavitve)
-            
-for povezava in povezave:
-    n = povezave.index(povezava)
-    ime_datoteke = f"podatki\stanovanja-mesto\posamezne\{n}.html"
-    shrani_spletno_stran(povezava, ime_datoteke)
-
-povezave = []
-for filename in os.listdir("podatki\hise-mesto"):
-    if filename.endswith(".html"): 
-        with open("podatki/hise-mesto/" + filename, encoding='utf-8') as datoteka:
-            stran = datoteka.read()
-            pojavitve = re.findall(vzorec, stran)
-            povezave.extend(pojavitve)
-            
-for povezava in povezave:
-    n = povezave.index(povezava)
-    ime_datoteke = f"podatki\hise-mesto\posamezne\{n}.html"
-    shrani_spletno_stran(povezava, ime_datoteke)
-
-povezave = []
-for filename in os.listdir("podatki\stanovanja-okolica"):
-    if filename.endswith(".html"): 
-        with open("podatki/stanovanja-okolica/" + filename, encoding='utf-8') as datoteka:
-            stran = datoteka.read()
-            pojavitve = re.findall(vzorec, stran)
-            povezave.extend(pojavitve)
-            
-for povezava in povezave:
-    n = povezave.index(povezava)
-    ime_datoteke = f"podatki\stanovanja-okolica\posamezne\{n}.html"
-    shrani_spletno_stran(povezava, ime_datoteke)
-
-povezave = []
-for filename in os.listdir("podatki\hise-okolica"):
-    if filename.endswith(".html"): 
-        with open("podatki/hise-okolica/" + filename, encoding='utf-8') as datoteka:
-            stran = datoteka.read()
-            pojavitve = re.findall(vzorec, stran)
-            povezave.extend(pojavitve)
-            
-for povezava in povezave:
-    n = povezave.index(povezava)
-    ime_datoteke = f"podatki\hise-okolica\posamezne\{n}.html"
-    shrani_spletno_stran(povezava, ime_datoteke)
+for i in range(len(indeksi_po_letih)):
+    leto = 1969 + i
+    for j in range(indeksi_po_letih[i]):
+        indeks = 30 * j
+        link = f"http://www.go4go.net/go/games/bydate/{leto}/{indeks}"
+        datoteka = f"podatki\{leto}\{j}.html"
+        shrani_spletno_stran(link, datoteka)
