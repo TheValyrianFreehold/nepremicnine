@@ -22,8 +22,8 @@ vzorec_bloka_igre = re.compile(
 vzorec_igre = re.compile(
     r'&nbsp;&nbsp;\[(?P<leto>.*?)\-(?P<mesec>.*?)\-(?P<dan>.*?)\]&nbsp;'
     r'&nbsp;(?P<turnir>.*?)\n.*?</td>.*?'
-    r'<td style="text-align:center;"><?b?>?(?P<igralec_crni>\D*)(?P<igralec_crni_rang>..).*?</td>.*?'
-    r'<td style="text-align:center;"><?b?>?(?P<igralec_beli>\D*)(?P<igralec_beli_rang>..).*?</td>.*?'
+    r'<td style="text-align:center;"><?b?>?(?P<igralec_crni>[a-zA-Z\s]*)(?P<igralec_crni_rang>[1-9]?).*?</td>.*?'
+    r'<td style="text-align:center;"><?b?>?(?P<igralec_beli>[a-zA-Z\s]*)(?P<igralec_beli_rang>[1-9]?).*?</td>.*?'
     r'<td style="text-align:center;">(?P<zmagovalec>\w*)\+?(?P<tip_zmage>.*?)</td>',
     flags = re.DOTALL)
 
