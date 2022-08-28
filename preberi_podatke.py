@@ -22,8 +22,8 @@ vzorec_bloka_igre = re.compile(
 vzorec_igre = re.compile(
     r'&nbsp;&nbsp;\[(?P<leto>.*?)\-(?P<mesec>.*?)\-(?P<dan>.*?)\]&nbsp;'
     r'&nbsp;(?P<turnir>.*?)\n.*?</td>.*?'
-    r'<td style="text-align:center;"><?b?>?(?P<igralec_crni>[a-zA-Z\s]*)(?P<igralec_crni_rang>[1-9]?).*?</td>.*?'
-    r'<td style="text-align:center;"><?b?>?(?P<igralec_beli>[a-zA-Z\s]*)(?P<igralec_beli_rang>[1-9]?).*?</td>.*?'
+    r'<td style="text-align:center;"><?b?>?(?P<igralec_crni>[\-a-zA-Z\s]*)(?P<igralec_crni_rang>[1-9]?).*?</td>.*?'
+    r'<td style="text-align:center;"><?b?>?(?P<igralec_beli>[\-a-zA-Z\s]*)(?P<igralec_beli_rang>[1-9]?).*?</td>.*?'
     r'<td style="text-align:center;">(?P<zmagovalec>\w*)\+?(?P<tip_zmage>.*?)</td>',
     flags = re.DOTALL)
 
@@ -51,7 +51,7 @@ dict_igralci_po_narodnosti = []
 drzave = ["Kitajska", "Koreja", "Japonska", "Tajvan", "Ostali", "AI"]
 for i in range(len(igralci_po_narodnosti)):
     for igralec in igralci_po_narodnosti[i]:
-        dict_igralci_po_narodnosti.append({"Država" : drzave[i], "Igralec" : igralec})
+        dict_igralci_po_narodnosti.append({"Drzava" : drzave[i], "Igralec" : igralec})
 
 orodja.zapisi_csv(igre, 
 ["leto", "mesec", "dan", "turnir",
@@ -60,5 +60,5 @@ orodja.zapisi_csv(igre,
 "podatki_iz_turnirjev.csv")
 
 orodja.zapisi_csv(dict_igralci_po_narodnosti, 
-["Država", "Igralec"], 
+["Drzava", "Igralec"], 
 "podatki_o_narodnosti.csv")
