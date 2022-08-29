@@ -1,10 +1,12 @@
 import orodja
 import re
 
+#Pove, koliko strani iger je za dano leto
 indeksi_po_letih = [57, 5, 8, 8, 8, 9, 11, 12, 11, 13, 11, 12, 12, 13, 15, 14, 22,
 18, 21, 28, 31, 36, 36, 34, 40, 36, 36, 36, 32, 31, 41, 53, 62, 57, 67, 62, 82, 
 102, 113, 106, 109, 99, 105, 131, 140, 140, 165, 173, 172, 189, 188, 184, 197, 118]
 
+#Naložimo spletne strani z igrami
 for i in range(len(indeksi_po_letih)):
     leto = 1969 + i
     for j in range(indeksi_po_letih[i]):
@@ -13,8 +15,10 @@ for i in range(len(indeksi_po_letih)):
         datoteka = f"podatki\{leto}\{j}.html"
         orodja.shrani_spletno_stran(link, datoteka)
 
+#Naložimo spletno stran s podatki o narodnosti
 orodja.shrani_spletno_stran("https://www.go4go.net/go/games/byplayer", "podatki\igralci_po_narodnosti.html")
 
+#Definiramo relevantne vzorce
 vzorec_bloka_igre = re.compile(
     r'<td colspan="6"><img src="/images/whiteball.gif">.*?<img src="/images/printer.gif"></a></td>',
     flags = re.DOTALL)
@@ -34,6 +38,7 @@ vzorec_bloka_narodnosti = re.compile(
 vzorec_igralca = re.compile(
     r'<option value=".*?">(?P<igralec>.*?)\s\(.*?\)')
 
+#Iz .html datotek izluščimo podatke o igrah
 igre = []
 for i in range(len(indeksi_po_letih)):
     leto = str(1969 + i)
@@ -42,6 +47,7 @@ for i in range(len(indeksi_po_letih)):
         for blok in vzorec_bloka_igre.finditer(stran):
             igre.append(vzorec_igre.search(blok.group(0)).groupdict())
 
+#Izluščimo podatke o narodnosti
 igralci_po_narodnosti = []
 stran = orodja.vsebina_datoteke("podatki/igralci_po_narodnosti.html")
 for blok in vzorec_bloka_narodnosti.findall(stran):
@@ -53,12 +59,13 @@ for i in range(len(igralci_po_narodnosti)):
     for igralec in igralci_po_narodnosti[i]:
         dict_igralci_po_narodnosti.append({"Drzava" : drzave[i], "Igralec" : igralec})
 
+#Shranimo podatke
 orodja.zapisi_csv(igre, 
 ["leto", "mesec", "dan", "turnir",
 "igralec_crni", "igralec_crni_rang", "igralec_beli",
 "igralec_beli_rang", "zmagovalec", "tip_zmage"], 
-"podatki_iz_turnirjev.csv")
+"podatki/podatki_iz_turnirjev.csv")
 
 orodja.zapisi_csv(dict_igralci_po_narodnosti, 
 ["Drzava", "Igralec"], 
-"podatki_o_narodnosti.csv")
+"podatki/podatki_o_narodnosti.csv")
